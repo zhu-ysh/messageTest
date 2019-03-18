@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_package = "com.sunlearning.messanger.proto";
+option java_outer_classname = "ProtoMessage";
+
+message InstantMessageInfo {
+  string MessageId = 1;
+  string SenderCode = 2;
+  string SenderName = 3;
+  string SenderAvatar = 4;
+  string ReceiverCode = 5;
+  string ReceiverName = 6;
+  string ReceiverAvatar = 7;
+  string ReceiverType = 8;
+  string ContentType = 9;
+  string StringContent = 10;
+  bytes BytesContent = 11;
+  int64 MessageTime = 12;
+  string FileName = 13;
+  string OldMessageId = 14;
+  string ChatCode = 15;
+  string ChatName = 16;
+  string ChatAvatar = 17;
+}
+
+// ReceiverType = Group, Dept, User
+// ContentType: Admin, Command, Text, Image, File, Video, Audio...
+

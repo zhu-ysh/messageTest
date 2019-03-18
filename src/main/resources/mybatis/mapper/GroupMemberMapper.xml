@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunlearning.messanger.mapper.GroupMemberMapper">
+	<resultMap id="BaseResultMap" type="com.sunlearning.messanger.pojo.GroupMemberInfo">
+		<id column="group_code" jdbcType="VARCHAR" property="groupCode" />
+		<id column="user_code" jdbcType="VARCHAR" property="userCode" />
+		<result column="user_rank" javaType="com.sunlearning.messanger.pojo.UserRank" property="userRank" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="path_name" jdbcType="VARCHAR" property="pathName" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+		<result column="add_date" jdbcType="TIMESTAMP" property="addDate" />
+	</resultMap>
+
+	<insert id="insertList" parameterType="java.util.List">
+		INSERT INTO group_member_info (group_code, user_code, user_rank, add_date) VALUES
+		<foreach collection="members" index="index" item="item" separator=",">
+			(#{item.groupCode,jdbcType=VARCHAR}, #{item.userCode,jdbcType=VARCHAR}, #{item.userRank,javaType=com.sunlearning.messanger.pojo.UserRank}, #{item.addDate,jdbcType=TIMESTAMP})
+		</foreach>
+	</insert>
+
+	<delete id="deleteByGroup" parameterType="java.lang.String">
+		DELETE FROM group_member_info WHERE group_code = #{groupCode,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="delete">
+		DELETE FROM group_member_info WHERE group_code = #{groupCode,jdbcType=VARCHAR} AND user_code = #{userCode,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="getList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT A.*, B.user_name, B.path_name, B.mobile, B.avatar
+		FROM group_member_info A JOIN user_info B ON A.user_code = B.user_code
+		WHERE group_code = #{groupCode,jdbcType=VARCHAR}
+	</select>
+</mapper>

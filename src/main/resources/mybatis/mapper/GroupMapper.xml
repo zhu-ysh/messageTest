@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunlearning.messanger.mapper.GroupMapper">
+	<resultMap id="BaseResultMap" type="com.sunlearning.messanger.pojo.GroupInfo">
+		<id column="group_code" jdbcType="VARCHAR" property="groupCode" />
+		<result column="group_name" jdbcType="VARCHAR" property="groupName" />
+		<result column="group_desc" jdbcType="VARCHAR" property="groupDesc" />
+		<result column="creator_code" jdbcType="VARCHAR" property="creatorCode" />
+		<result column="creator_name" jdbcType="VARCHAR" property="creatorName" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="avatar" jdbcType="VARCHAR" property="avatar" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.sunlearning.messanger.pojo.GroupInfo">
+		INSERT INTO group_info (group_code, group_name, group_desc, create_date) VALUES
+			(#{groupCode,jdbcType=VARCHAR}, #{groupName,jdbcType=VARCHAR}, #{groupDesc,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP})
+	</insert>
+
+	<insert id="update" parameterType="com.sunlearning.messanger.pojo.GroupInfo">
+		UPDATE group_info SET group_name = #{groupName,jdbcType=VARCHAR}, group_desc = #{groupDesc,jdbcType=VARCHAR} WHERE group_code = #{groupCode,jdbcType=VARCHAR}
+	</insert>
+
+	<delete id="delete">
+		DELETE FROM group_info WHERE group_code = #{groupCode,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT A.*, C.user_code AS creator_code, C.user_name as creator_name, C.avatar AS avatar
+		FROM group_info A JOIN group_member_info B ON A.group_code = B.group_code AND B.user_rank = 'CREATOR'
+			JOIN user_info C ON B.user_code = C.user_code
+		WHERE A.group_code = #{groupCode,jdbcType=VARCHAR}
+		ORDER BY C.sort_order
+	</select>
+
+	<select id="getListByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		<bind name="pattern" value="'%' + searchKey + '%'" />
+		SELECT A.*, C.user_code AS creator_code, C.user_name as creator_name, C.avatar AS avatar
+		FROM group_info A JOIN group_member_info B ON A.group_code = B.group_code AND B.user_rank = 'CREATOR'
+			JOIN user_info C ON B.user_code = C.user_code
+		WHERE A.group_name LIKE #{pattern}
+	</select>
+
+	<select id="getListByUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT A.*, C.user_code AS creator_code, C.user_name as creator_name, C.avatar AS avatar
+		FROM group_info A JOIN group_member_info B ON A.group_code = B.group_code AND B.user_rank = 'CREATOR'
+			JOIN user_info C ON B.user_code = C.user_code
+		WHERE A.group_code IN (
+			SELECT group_code
+			FROM group_member_info D JOIN user_info E ON D.user_code = E.user_code
+			WHERE D.user_code = #{userCode,jdbcType=VARCHAR}
+		)
+	</select>
+</mapper>

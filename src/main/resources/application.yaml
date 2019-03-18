@@ -1,0 +1,50 @@
+server:
+  port: 9118
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://39.98.74.37:3306/message?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&autoReconnect=true&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: Beiqi@Loonyi@2018@Mysql
+    driverClassName: com.mysql.cj.jdbc.Driver
+    # driverClassName: com.mysql.jdbc.Driver
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    exceptionSorter: true
+    testOnReturn: false
+    poolPreparedStatements: true
+    filters: stat,wall,log4j
+    maxPoolPreparedStatementPerConnectionSize: 20
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+    useGlobalDataSourceStat: true
+  redis:
+    host: 47.105.59.96
+    port: 6379
+    timeout: 10000
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+mybatis:
+  config-location: classpath:mybatis/config.xml
+  mapper-locations: classpath:mybatis/mapper/**/*Mapper.xml
+
+sunlearning:
+  appSecerty: 1234567890
+  issuer: com.sunlearning
+  audience: com.qdbeiqi
+  accessTokenExpiration: 7
+  protocolName: sunlearning
+  serverPort: 9326
+  HeartBeatTimeout: 60000
+  saveDir: D:\sxw\nginx-1.14.1\html\images\
+    # saveDir: /home/sxw/imserver/html/images/ 不要忘记最后的斜杠
+    

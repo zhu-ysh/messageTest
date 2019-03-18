@@ -1,0 +1,13 @@
+{
+  "name": "MessangerClient",
+  "displayName": "MessangerClient",
+  "dateFormat": "YYYY-MM-DD",
+  "remoteUrl": "http://192.168.0.102:9118/InstantMessage",
+  "wsUrl": "http://192.168.0.102:9326",
+  "websocket": {
+    "heartbeatTimeout": 5000,
+    "reconnInterval": 5000,
+    "binaryType": "blob"
+  },
+  "pageSize": 20
+}

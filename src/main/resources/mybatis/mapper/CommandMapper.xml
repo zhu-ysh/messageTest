@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunlearning.messanger.mapper.CommandMapper">
+	<resultMap id="BaseResultMap" type="com.sunlearning.messanger.pojo.CommandInfo">
+		<id column="command_code" jdbcType="VARCHAR" property="commandCode" />
+		<id column="user_code" jdbcType="VARCHAR" property="userCode" />
+		<id column="dest_code" jdbcType="VARCHAR" property="destCode" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="user_path" jdbcType="VARCHAR" property="userPath" />
+		<result column="dest_name" jdbcType="VARCHAR" property="destName" />
+		<result column="dest_path" jdbcType="VARCHAR" property="destPath" />
+	</resultMap>
+
+	<insert id="insert" parameterType="com.sunlearning.messanger.pojo.CommandInfo">
+		INSERT INTO command_info (command_code, user_code, dest_code)
+		VALUES (#{commandCode,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR},#{destCode,jdbcType=VARCHAR})
+	</insert>
+
+	<delete id="delete">
+		DELETE FROM command_info WHERE command_code = #{commandCode,jdbcType=VARCHAR} AND user_code = #{userCode,jdbcType=VARCHAR} AND dest_code = #{destCode,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="getList" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT A.*, B.user_name, B.path_name AS user_path_name, C.user_name AS dest_name, C.path_name AS dest_path_name
+		FROM command_info A JOIN user_info B ON A.user_code = B.user_code JOIN user_info C ON A.dest_code = B.user_code
+		WHERE dest_code = #{destCode,jdbcType=VARCHAR}
+	</select>
+</mapper>
